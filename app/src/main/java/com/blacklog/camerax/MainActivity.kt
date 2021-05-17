@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
         startCamera()
-        binding.cameraCaptureButton.setOnClickListener {
+        binding.btnTakePicture.setOnClickListener {
             takePhoto()
         }
         outputDirectory = getOutputDirectory()
@@ -44,8 +44,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnTorch.setOnClickListener {
             when(cameraInfo?.torchState?.value){
-                TorchState.ON -> cameraController?.enableTorch(false)
-                TorchState.OFF -> cameraController?.enableTorch(true)
+                TorchState.ON -> {
+                    cameraController?.enableTorch(false)
+                    binding.btnTorch.text = "Torch ON"
+                }
+                TorchState.OFF -> {
+                    cameraController?.enableTorch(true)
+                    binding.btnTorch.text = "Torch OFF"
+                }
             }
         }
     }

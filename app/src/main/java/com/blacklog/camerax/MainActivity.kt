@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import com.blacklog.camerax.databinding.ActivityMainBinding
 import java.io.File
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -124,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun newJpgFileName() : String {
-        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss")
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.KOREA)
         val filename = sdf.format(System.currentTimeMillis())
         return "${filename}.jpg"
     }

@@ -1,14 +1,12 @@
 package com.blacklog.camerax
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.blacklog.camerax.databinding.ActivityMainBinding
@@ -26,6 +24,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var outputDirectory: File
     private lateinit var cameraExecutor: ExecutorService
 
+    // CameraController
+    private var camera : Camera? = null
+    private var cameraController : CameraControl? = null
+    private var cameraInfo: CameraInfo? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,6 +40,14 @@ class MainActivity : AppCompatActivity() {
         }
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
+
+
+        binding.btnTorch.setOnClickListener {
+            when(cameraInfo?.torchState?.value){
+                TorchState.ON -> cameraController?.enableTorch(false)
+                TorchState.OFF -> cameraController?.enableTorch(true)
+            }
+        }
     }
 
     private fun takePhoto() {
@@ -62,6 +73,11 @@ class MainActivity : AppCompatActivity() {
                         val msg = "Photo capture succeeded: $savedUri"
                         Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                         Log.d("CameraX-Debug", msg)
+
+                        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also{
+                            it.data = savedUri
+                            sendBroadcast(it)
+                        }
                     }
                 })
     }
@@ -86,11 +102,15 @@ class MainActivity : AppCompatActivity() {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
                 // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
+                camera = cameraProvider.bindToLifecycle(
                         this,
                         cameraSelector,
                         preview,
                         imageCapture)
+
+                cameraController = camera!!.cameraControl
+                cameraInfo = camera!!.cameraInfo
+
             } catch(exc: Exception) {
                 Log.d("CameraX-Debug", "Use case binding failed", exc)
             }
@@ -106,7 +126,9 @@ class MainActivity : AppCompatActivity() {
     private fun getOutputDirectory(): File {
         val mediaDir = externalMediaDirs.firstOrNull()?.let {
             File(it, resources.getString(R.string.app_name)).apply {
-                mkdirs()
+                if(!this.exists()){
+                    mkdirs()
+                }
             }
         }
         return if (mediaDir != null && mediaDir.exists()) mediaDir

@@ -26,15 +26,110 @@
         app:layout_constraintBottom_toTopOf="@+id/btnTorch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+    </androidx.camera.view.PreviewView>
 
     <Button
         android:id="@+id/btnTorch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Torch On"
-        android:layout_margin="8dp"
+        android:layout_margin="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn1X"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="1x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn2X" />
+
+    <Button
+        android:id="@+id/btn2X"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="2x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn5X" />
+
+    <Button
+        android:id="@+id/btn5X"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="5x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn10X" />
+
+    <Button
+        android:id="@+id/btn10X"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="10x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/txtZoomState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="CameraInfo"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MaxZoomRatio : "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/txtMaxZoom"
+        app:layout_constraintTop_toTopOf="@+id/txtMaxZoom" />
+
+    <TextView
+        android:id="@+id/txtMaxZoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <TextView
+
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MinZoomRatio : "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/txtMinZoom"
+        app:layout_constraintTop_toTopOf="@+id/txtMinZoom" />
+
+    <TextView
+        android:id="@+id/txtMinZoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/txtMaxZoom"
+        app:layout_constraintTop_toBottomOf="@+id/txtMaxZoom"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

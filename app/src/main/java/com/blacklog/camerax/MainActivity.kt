@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import androidx.camera.core.Camera as Camera
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         outputDirectory = getOutputDirectory()
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-
         binding.btnTorch.setOnClickListener {
             when(cameraInfo?.torchState?.value){
                 TorchState.ON -> {
@@ -55,6 +55,24 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.btn1X.setOnClickListener {
+            cameraController?.setZoomRatio(1F)
+        }
+        binding.btn2X.setOnClickListener {
+            cameraController?.setZoomRatio(2F)
+        }
+        binding.btn5X.setOnClickListener {
+            cameraController?.setZoomRatio(5F)
+        }
+        binding.btn10X.setOnClickListener {
+            cameraController?.setZoomRatio(8F)
+        }
+
+//        binding.txtZoomState.setOnClickListener {
+//            binding.txtZoomState.text = cameraInfo?.zoomState.currentZoomRatio.toString()
+//            val zoomState = cameraInfo?.getZoomState()
+//        }
     }
 
     private fun takePhoto() {
@@ -117,6 +135,14 @@ class MainActivity : AppCompatActivity() {
 
                 cameraController = camera!!.cameraControl
                 cameraInfo = camera!!.cameraInfo
+
+                cameraInfo!!.zoomState.observe(this, androidx.lifecycle.Observer {
+                    val currentZoomRatio = it.zoomRatio
+                    Log.d("MyCameraXBasic", currentZoomRatio.toString())
+                    binding.txtZoomState.text = currentZoomRatio.toString()
+                    binding.txtMaxZoom.text = it.maxZoomRatio.toString()
+                    binding.txtMinZoom.text = it.minZoomRatio.toString()
+                })
 
             } catch(exc: Exception) {
                 Log.d("CameraX-Debug", "Use case binding failed", exc)
